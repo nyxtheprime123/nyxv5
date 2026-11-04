@@ -45,7 +45,7 @@ local function checkForUpdates()
 	end
 	local current = isfile('aerov4/profiles/commit.txt') and readfile('aerov4/profiles/commit.txt') or ''
 	local ok, res = pcall(function()
-		return game:HttpGet('https://api.github.com/repos/nyxtheprime123/nyxv5/commits/main', true)
+		return game:HttpGet('https://api.github.com/repos/nyxtheprime123/aerov4/commits/main', true)
 	end)
 	local latest = ok and type(res) == 'string' and res:match('"sha"%s*:%s*"(%x+)"')
 	if not latest or #latest ~= 40 then
