@@ -28,4 +28,4 @@ end)
 
 task.wait(0.67)
 
-loadstring(game:HttpGet('https://raw.githubusercontent.com/danielayobami903-stack/Onyxv4/main/main.lua', true))()
+loadstring(game:HttpGet('https://raw.githubusercontent.com/nyxtheprime123/nyxv5/main/main.lua', true))()

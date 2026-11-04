@@ -1,7 +1,7 @@
 repeat task.wait() until game:IsLoaded()
 if shared.vape then shared.vape:Uninject() end
 
-local LOADER_URL = "https://raw.githubusercontent.com/danielayobami903-stack/Onyxv4/main/downloader.lua" 
+local LOADER_URL = "https://raw.githubusercontent.com/nyxtheprime123/nyxv5/main/downloader.lua" 
 local _initArgs = ...
 if type(_initArgs) ~= "table" then _initArgs = {} end
 shared.aerov4User = "spookers 👻"
@@ -45,7 +45,7 @@ local function checkForUpdates()
 	end
 	local current = isfile('aerov4/profiles/commit.txt') and readfile('aerov4/profiles/commit.txt') or ''
 	local ok, res = pcall(function()
-		return game:HttpGet('https://api.github.com/repos/danielayobami903-stack/Onyxv4/commits/main', true)
+		return game:HttpGet('https://api.github.com/repos/nyxtheprime123/nyxv5/commits/main', true)
 	end)
 	local latest = ok and type(res) == 'string' and res:match('"sha"%s*:%s*"(%x+)"')
 	if not latest or #latest ~= 40 then
@@ -103,7 +103,7 @@ local function downloadFile(path, func)
 		local success = false
 		for attempt = 1, 3 do
 			local suc, result = pcall(function()
-				return game:HttpGet('https://raw.githubusercontent.com/danielayobami903-stack/Onyxv4/' .. readfile('aerov4/profiles/commit.txt') .. '/' .. select(1, path:gsub('aerov4/', '')), true)
+				return game:HttpGet('https://raw.githubusercontent.com/nyxtheprime123/nyxv5/' .. readfile('aerov4/profiles/commit.txt') .. '/' .. select(1, path:gsub('aerov4/', '')), true)
 			end)
 			if suc and result ~= '404: Not Found' then
 				res = result
@@ -334,7 +334,7 @@ if not shared.VapeIndependent then
 	else
 		if not shared.VapeDeveloper then
 			local suc, res = pcall(function()
-				return game:HttpGet('https://raw.githubusercontent.com/danielayobami903-stack/Onyxv4/' .. readfile('aerov4/profiles/commit.txt') .. '/games/' .. gameFileId .. '.lua', true)
+				return game:HttpGet('https://raw.githubusercontent.com/nyxtheprime123/nyxv5/' .. readfile('aerov4/profiles/commit.txt') .. '/games/' .. gameFileId .. '.lua', true)
 			end)
 			if suc and res and res ~= '404: Not Found' then
 				local path = 'aerov4/games/' .. gameFileId .. '.lua'
