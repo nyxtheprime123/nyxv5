@@ -15143,7 +15143,6 @@ run(function()
 end)
 
 run(function()
-	local SkinChanger
 	local Options = {}
 	local CategoryToggles = {}
 	local skins, families, groups, order = {}, {}, {}, {}
@@ -15360,7 +15359,7 @@ run(function()
 		end)
 	end
 
-	SkinChanger = vape.Categories.Render:CreateModule({
+	local SkinChanger = vape.Categories.Render:CreateModule({
 		Name = 'SkinChanger',
 		Function = function(callback)
 			if callback then
@@ -25405,7 +25404,7 @@ run(function()
 				local function trackAdd(obj)
 					local t = tracked[obj.Name]
 					if not t then return end
-					local part = obj:IsA('BasePart') and obj or obj:IsA('Model') and (obj.PrimaryPart or obj:FindFirstChildWhichIsA('BasePart'))
+					local part = obj:IsA('BasePart') and obj or obj:IsA('Model') and (obj.PrimaryPart or obj:FindFirstChildWhichIsA('BasePart', true))
 					if part and not table.find(t, part) then
 						table.insert(t, part)
 					end
@@ -25413,7 +25412,7 @@ run(function()
 				local function trackRemove(obj)
 					local t = tracked[obj.Name]
 					if not t then return end
-					local part = obj:IsA('Model') and (obj.PrimaryPart or obj:FindFirstChildWhichIsA('BasePart')) or obj
+					local part = obj:IsA('Model') and (obj.PrimaryPart or obj:FindFirstChildWhichIsA('BasePart', true)) or obj
 					local i = part and table.find(t, part)
 					if i then table.remove(t, i) end
 					breakableCache[obj] = nil

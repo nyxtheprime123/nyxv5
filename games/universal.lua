@@ -3731,7 +3731,7 @@ run(function()
 	end
 	
 	local function ESPWorldToViewport(pos)
-		local newpos = gameCamera:WorldToViewportPoint(gameCamera.CFrame:pointToWorldSpace(gameCamera.CFrame:PointToObjectSpace(pos)))
+		local newpos = gameCamera:WorldToViewportPoint(gameCamera.CFrame:PointToWorldSpace(gameCamera.CFrame:PointToObjectSpace(pos)))
 		return Vector2.new(newpos.X, newpos.Y)
 	end
 	
