@@ -3822,6 +3822,17 @@ run(function()
 end)
 
 run(function()
+    local HitRegistryMode
+
+    HitRegistryMode = Options:CreateDropdown({
+        Name = 'Hit Register Mode',
+        List = {'34 Con', '35 Con'},
+        Default = '34 Con',
+        Tooltip = '34 Con = 50, 35 Con = 48.55'
+    })
+end)
+	
+run(function()
 	local Viewmodel
 	local Depth
 	local Horizontal
