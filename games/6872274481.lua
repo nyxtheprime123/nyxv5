@@ -7454,7 +7454,7 @@ run(function()
 		local Hits = 35
 
 		local Speed = meta.sword and meta.sword.attackSpeed or 0.3
-		local Spacing = SwordTiming.Calculate(Speed, HighMode, DynamicDelay, Budget, Hits)
+		local Spacing = select(1, SwordTiming.Calculate(Speed, HighMode, DynamicDelay, Budget, Hits))
 		return quantize240(Spacing)
 	end
 
