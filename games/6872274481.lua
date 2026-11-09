@@ -7336,8 +7336,7 @@ run(function()
 	local ArrowCharge = 100 -- Default 100% charge (full power)
 	local UseKits
 	local AttackRemote
-	local HitregMode
-	local DynamicDelaySlider
+	local HitRegistryMode
 	local lastAttackTime = 0
 	local lastTargetTime = 0
 	local lastAnimTime = 0 -- Track when last animation was played to prevent doubling
@@ -7437,24 +7436,14 @@ run(function()
 	end
 
 	local function getAttackDelay(meta)
-		local mode = (HitregMode and HitregMode.Value) or 'Stealth Mode'
-		local dynDelay = (DynamicDelaySlider and DynamicDelaySlider.Value) or 100
-		local Speed = meta.sword and meta.sword.attackSpeed or 0.3
+		local modeValue = HitRegistryMode and HitRegistryMode.Value or '34 Con'
+		local HighMode = (modeValue == '35 Con') and 'Advanced Mode' or 'Stealth Mode'
+		local DynamicDelay = 0
 		local Budget = 0
 		local Hits = 35
-		
-		-- Advanced Mode: 48.55, Stealth Mode: 50, Dynamic: slider value
-		local effectiveDelay
-		if mode == 'Dynamic' then
-			effectiveDelay = dynDelay
-		elseif mode == 'Advanced Mode' then
-			effectiveDelay = 49.55
-		else
-			effectiveDelay = 50
-		end
-		
-		-- This decouples hit registration from animation speed
-		local Spacing = SwordTiming.Calculate(Speed, 'Dynamic', effectiveDelay, Budget, Hits)
+
+		local Speed = meta.sword and meta.sword.attackSpeed or 0.3
+		local Spacing = SwordTiming.Calculate(Speed, HighMode, DynamicDelay, Budget, Hits)
 		return quantize240(Spacing)
 	end
 
@@ -9293,26 +9282,11 @@ run(function()
 		Default = false
 	})
 
-	HitregMode = Killaura:CreateDropdown({
-		Name = 'Hitreg Mode',
-		List = {'Stealth Mode', 'Advanced Mode', 'Dynamic'},
-		Default = 'Stealth Mode',
-		Function = function(val)
-			if DynamicDelaySlider and DynamicDelaySlider.Object then
-				DynamicDelaySlider.Object.Visible = (val == 'Dynamic')
-			end
-		end
-	})
-
-	DynamicDelaySlider = Killaura:CreateSlider({
-		Name = 'Dynamic Delay',
-			Min = 1,
-			Max = 100,
-			Default = 100,
-			Suffix = '%',
-		Darker = true,
-		Visible = false,
-		Tooltip = 'Controls hit spacing dynamically (1-100%) when Dynamic Hitreg Mode is selected'
+	HitRegistryMode = Killaura:CreateDropdown({
+		Name = 'Hit Register Mode',
+		List = {'34 Con', '35 Con'},
+		Default = '34 Con',
+		Tooltip = '34 Con = 34 hit reg, 35 Con = 35 hit reg'
 	})
 
 	UseKits = Killaura:CreateToggle({
