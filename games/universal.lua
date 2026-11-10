@@ -13,11 +13,40 @@ local isfile = isfile or function(file)
 end
 local function downloadFile(path, func)
 	if not isfile(path) then
-		local suc, res = pcall(function()
-			return game:HttpGet('https://raw.githubusercontent.com/nyxtheprime123/nyxv5/'..readfile('aerov4/profiles/commit.txt')..'/'..select(1, path:gsub('aerov4/', '')), true)
-		end)
-		if not suc or res == '404: Not Found' then
-			error(res)
+		local res
+		local success = false
+		local commit = isfile('aerov4/profiles/commit.txt') and readfile('aerov4/profiles/commit.txt') or 'main'
+		
+		for attempt = 1, 3 do
+			local suc, result = pcall(function()
+				return game:HttpGet('https://raw.githubusercontent.com/nyxtheprime123/nyxv5/' .. commit .. '/' .. select(1, path:gsub('aerov4/', '')), true)
+			end)
+			if suc and result ~= '404: Not Found' and result ~= '' then
+				res = result
+				success = true
+				break
+			end
+			task.wait(1)
+		end
+		
+		-- Fallback to main branch if commit fails
+		if not success and commit ~= 'main' then
+			for attempt = 1, 3 do
+				local suc, result = pcall(function()
+					return game:HttpGet('https://raw.githubusercontent.com/nyxtheprime123/nyxv5/main/' .. select(1, path:gsub('aerov4/', '')), true)
+				end)
+				if suc and result ~= '404: Not Found' and result ~= '' then
+					res = result
+					success = true
+					pcall(writefile, 'aerov4/profiles/commit.txt', 'main')
+					break
+				end
+				task.wait(1)
+			end
+		end
+		
+		if not success then
+			error('Failed to download ' .. path .. ' after 3 attempts')
 		end
 		if path:find('.lua') then
 			res = '--This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.\n'..res
