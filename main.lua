@@ -1,10 +1,10 @@
 repeat task.wait() until game:IsLoaded()
 if shared.vape then shared.vape:Uninject() end
 
-local LOADER_URL = "https://raw.githubusercontent.com/wrealaero/aerov4/main/downloader.lua" 
+local LOADER_URL = "https://raw.githubusercontent.com/nyxtheprime123/nyxv5/main/downloader.lua" 
 local _initArgs = ...
 if type(_initArgs) ~= "table" then _initArgs = {} end
-shared.aerov4User = "spookers 👻"
+shared.aerov4User = "nyxv5"
 
 if identifyexecutor then
 	if table.find({'Wave', 'Seliware', 'Volt'}, ({identifyexecutor()})[1]) then
@@ -71,17 +71,36 @@ local function downloadFile(path, func)
 	if not isfile(path) then
 		local res
 		local success = false
+		local commit = isfile('aerov4/profiles/commit.txt') and readfile('aerov4/profiles/commit.txt') or 'main'
+		
 		for attempt = 1, 3 do
 			local suc, result = pcall(function()
-				return game:HttpGet('https://raw.githubusercontent.com/wrealaero/aerov4/' .. readfile('aerov4/profiles/commit.txt') .. '/' .. select(1, path:gsub('aerov4/', '')), true)
+				return game:HttpGet('https://raw.githubusercontent.com/nyxtheprime123/nyxv5/' .. commit .. '/' .. select(1, path:gsub('aerov4/', '')), true)
 			end)
-			if suc and result ~= '404: Not Found' then
+			if suc and result ~= '404: Not Found' and result ~= '' then
 				res = result
 				success = true
 				break
 			end
 			task.wait(1)
 		end
+		
+		-- Fallback to main branch if commit fails
+		if not success and commit ~= 'main' then
+			for attempt = 1, 3 do
+				local suc, result = pcall(function()
+					return game:HttpGet('https://raw.githubusercontent.com/nyxtheprime123/nyxv5/main/' .. select(1, path:gsub('aerov4/', '')), true)
+				end)
+				if suc and result ~= '404: Not Found' and result ~= '' then
+					res = result
+					success = true
+					pcall(writefile, 'aerov4/profiles/commit.txt', 'main')
+					break
+				end
+				task.wait(1)
+			end
+		end
+		
 		if not success then
 			error('Failed to download ' .. path .. ' after 3 attempts')
 		end
@@ -304,7 +323,7 @@ if not shared.VapeIndependent then
 	else
 		if not shared.VapeDeveloper then
 			local suc, res = pcall(function()
-				return game:HttpGet('https://raw.githubusercontent.com/wrealaero/aerov4/' .. readfile('aerov4/profiles/commit.txt') .. '/games/' .. gameFileId .. '.lua', true)
+				return game:HttpGet('https://raw.githubusercontent.com/nyxtheprime123/nyxv5/' .. readfile('aerov4/profiles/commit.txt') .. '/games/' .. gameFileId .. '.lua', true)
 			end)
 			if suc and res and res ~= '404: Not Found' then
 				local path = 'aerov4/games/' .. gameFileId .. '.lua'
